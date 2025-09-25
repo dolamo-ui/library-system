@@ -1,440 +1,220 @@
-📚 Author \& Book API
-
-
+📚 Author & Book API
 
 A simple RESTful API for managing authors and their books using Node.js, Express, and TypeScript.
 
 
+✅ Features
 
-✅ Step-by-Step Instructions
+⦁	Manage authors and books with full CRUD support.
+
+⦁	Filter, sort, and paginate books by author.
+
+⦁	Clear RESTful structure and responses.
+
+⦁	Written in TypeScript with robust request validation.
 
 
+⚙️ Getting Started
 
-1\. ✅ Install dependencies
+1. Clone the repo
 
+git clone https://github.com/your-org/library-api.git
+cd library-api
 
+2. Install dependencies
 
 npm install
 
-
-
-2\. ▶️ Start the development server
-
-
+3. Start development server
 
 npm run dev
 
 
-
-This should output something like:
-
-\[INFO] Starting development server...
-
-Library API running at http://localhost:3000
-
-
-
-📘 Endpoints
-
+📘 API Endpoints
 
 
 🧑‍🏫 Authors
+🔹 GET /authors
 
-
-
-GET /authors
-
-GET http://localhost:3000/authors
-
-Description: Get all authors.
-
-Response: 200 OK
-
-
-
-\[
-
-&nbsp; {
-
-&nbsp;   "id": 1,
-
-&nbsp;   "name": "George Orwell"
-
-&nbsp; }
-
+Description: Get all authors
+Example Response:
+[
+  {
+    "id": 1,
+    "name": "George Orwell"
+  }
 ]
 
 
+🔹 POST /authors
 
-
-
-POST /authors
-
-POST http://localhost:3000/authors
-
-Description: Create a new author.
-
-Request Body: 
-
+Description: Create a new author
+Request Body:
 {
-
-&nbsp; "name": "George Orwell"
-
+  "name": "George Orwell"
 }
-
-
 
 Responses:
 
-201 Created: Author created
+⦁	201 Created: Author created
+⦁	400 Bad Request: Missing name
+⦁	409 Conflict: Author already exists
 
 
+🔹 GET /authors/:id
 
-400 Bad Request: Missing name
-
-
-
-409 Conflict: Author already exists
-
-
-
-
-
-
-
-GET /authors/:id
-
-http://localhost:3000/authors/1
-
-Description: Get an author by ID
-
+Description: Get a specific author by ID
 Response:
+{
+  "id": 1,
+  "name": "George Orwell"
+}
 
-200 OK: Author object
-
-
-
-404 Not Found: Author not found
-
-
-
+.404 Not Found: Author not found
 
 
 🔹 PUT /authors/:id
 
-PUT http://localhost:3000/authors/1
-
-Description: Update an author's name.
-
+Description: Update an author's name
 Request Body:
-
 {
-
-&nbsp; "name": "Eric Arthur Blair"
-
+  "name": "Eric Arthur Blair"
 }
 
-Response: Updated author or 404 Not Found
+Response:
+{
+  "id": 1,
+  "name": "Eric Arthur Blair"
+}
 
-
-
+⦁	404 Not Found: Author not found
 
 
 🔹 DELETE /authors/:id
+Description: Delete an author by ID
+Response:
+{
+  "message": "Author deleted"
+}
 
-DELETE http://localhost:3000/authors/1
-
-Description: Delete an author by ID.
-
-Response: Deleted author or 404 Not Found
-
-
-
+⦁	404 Not Found: Author not found
 
 
 🔹 GET /authors/:id/books
 
-Description: Get all books by a specific author.
+Description: Get books by an author, with filtering, sorting, and pagination
 
-Supports:
+Query Parameters:
 
+search (string): Filter by book title
+year (number): Filter by published year
+sortBy (title | year): Sort results
+order (asc | desc): Sort order
+page (number): Page number (default: 1)
+limit (number): Items per page (default: 10)
 
+Example:
 
-search: Filter by book title
-
-
-
-year: Filter by published year
-
-
-
-sortBy: title or year
-
-
-
-order: asc or desc
-
-
-
-page: Page number
-
-
-
-limit: Items per page
-
-
-
-GET /authors/1/books?search=farm\&sortBy=year\&order=asc\&page=1\&limit=2
-
-
+GET /authors/1/books?search=farm&sortBy=year&order=asc&page=1&limit=2
 
 Response:
-
 {
-
-&nbsp; "page": 1,
-
-&nbsp; "limit": 2,
-
-&nbsp; "totalPages": 1,
-
-&nbsp; "totalItems": 1,
-
-&nbsp; "data": \[
-
-&nbsp;   {
-
-&nbsp;     "id": 2,
-
-&nbsp;     "title": "Animal Farm",
-
-&nbsp;     "year": 1945,
-
-&nbsp;     "authorId": 1
-
-&nbsp;   }
-
-&nbsp; ]
-
-}
-
-
-
-GET http://localhost:3000/authors/1/books?search=farm
-
-Response:
-
-{
-
-&nbsp; "page": 1,
-
-&nbsp; "limit": 10,
-
-&nbsp; "totalPages": 1,
-
-&nbsp; "totalItems": 1,
-
-&nbsp; "data": \[
-
-&nbsp;   {
-
-&nbsp;     "title": "Animal Farm",
-
-&nbsp;     "year": 1945,
-
-&nbsp;     "authorId": 1,
-
-&nbsp;     "id": 2
-
-&nbsp;   }
-
-&nbsp; ]
-
-}
-
-
-
-GET http://localhost:3000/authors/1/books?sortBy=year\&order=desc
-
-
-
-{
-
-&nbsp; "page": 1,
-
-&nbsp; "limit": 10,
-
-&nbsp; "totalPages": 1,
-
-&nbsp; "totalItems": 3,
-
-&nbsp; "data": \[
-
-&nbsp;   {
-
-&nbsp;     "id": 1,
-
-&nbsp;     "title": "Nineteen Eighty-Four",
-
-&nbsp;     "year": 1949,
-
-&nbsp;     "authorId": 1
-
-&nbsp;   },
-
-&nbsp;   {
-
-&nbsp;     "id": 2,
-
-&nbsp;     "title": "Animal Farm",
-
-&nbsp;     "year": 1945,
-
-&nbsp;     "authorId": 1
-
-&nbsp;   },
-
-&nbsp;   {
-
-&nbsp;     "id": 3,
-
-&nbsp;     "title": "Homage to Catalonia",
-
-&nbsp;     "year": 1938,
-
-&nbsp;     "authorId": 1
-
-&nbsp;   }
-
-&nbsp; ]
-
-}
-
-
-
-
-
-**📚 Books**
-
-**🔹 GET /books**
-
-**GET http://localhost:3000/books**
-
-**Description: Get all books.**
-
-**Response: List of books.**
-
-{
-
-      "id": 1,
-
-      "title": "Nineteen Eighty-Four",
-
-      "year": 1949,
-
+  "page": 1,
+  "limit": 2,
+  "totalPages": 1,
+  "totalItems": 1,
+  "data": [
+    {
+      "id": 2,
+      "title": "Animal Farm",
+      "year": 1945,
       "authorId": 1
+    }
+  ]
+}
 
-    },
 
- }
 
+📚 Books
+🔹 GET /books
+
+Description: Get all books
+Response:
+[
+  {
+    "id": 1,
+    "title": "Nineteen Eighty-Four",
+    "year": 1949,
+    "authorId": 1
+  }
+]
 
 
 🔹 POST /books
 
-**POST http://localhost:3000/books**
-
-Description: Create a new book.
-
+Description: Create a new book
 Request Body:
-
 {
-
-&nbsp; "title": "Animal Farm",
-
-&nbsp; "year": 1945,
-
-&nbsp; "authorId": 1
-
+  "title": "Animal Farm",
+  "year": 1945,
+  "authorId": 1
 }
-
-
 
 Responses:
 
-201 Created
-
-400 Bad Request
-
-409 Conflict: Duplicate title for the same author
-
+⦁	201 Created
+⦁	400 Bad Request
+⦁	409 Conflict: Duplicate title for the same author
 
 
 🔹 GET /books/:id
 
-**GET http://localhost:3000/books/1**
-
-Description: Get a book by ID.
-
-
-
+Description: Get a specific book by ID
+Response:
 {
+  "id": 1,
+  "title": "Nineteen Eighty-Four",
+  "year": 1949,
+  "authorId": 1
+}
 
-      "id": 1,
-
-      "title": "Nineteen Eighty-Four",
-
-      "year": 1949,
-
-      "authorId": 1
-
-    },
-
- }
-
-
-
+⦁	404 Not Found: Book not found
 
 
 🔹 PUT /books/:id
 
-**PUT http://localhost:3000/books/1**
-
-Description: Update a book.
-
+Description: Update a book by ID
 Request Body:
-
 {
-
-&nbsp; "title": "Homage to Catalonia",
-
-&nbsp; "year": 2023,
-
-&nbsp; "authorId": 1
-
+  "title": "Homage to Catalonia",
+  "year": 2023,
+  "authorId": 1
 }
 
+⦁	200 OK: Updated book
+⦁	404 Not Found: Book not found
 
 
 🔹 DELETE /books/:id
 
-DELETE **http://localhost:3000/books/1**
+Description: Delete a book by ID
+Response:
+{
+  "message": "Book deleted"
+}
 
-Description: Delete a book by ID.
-
-
+⦁	404 Not Found: Book not found
 
 ❗ Error Responses
-
-| Status | Meaning                    |
-
-| ------ | -------------------------- |
-
-| 400    | Bad Request                |
-
-| 404    | Not Found                  |
-
-| 409    | Conflict (e.g., duplicate) |
+| Status | Meaning                          |
+| ------ | -------------------------------- |
+| 400    | Bad Request                      |
+| 404    | Not Found                        |
+| 409    | Conflict (e.g., duplicate entry) |
 
 
+🧪 Testing
 
+You can test endpoints using tools like:
+
+⦁	Postman
