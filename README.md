@@ -2,34 +2,6 @@
 
 A simple RESTful API for managing authors and their books using Node.js, Express, and TypeScript.
 
-1. Create Tables
-
-CREATE TABLE authors (
-    id SERIAL PRIMARY KEY,
-    name VARCHAR(100) NOT NULL,
-    nationality VARCHAR(50),
-    birth_year INTEGER,
-    death_year INTEGER
-);
-
-CREATE TABLE books (
-    id SERIAL PRIMARY KEY,
-    title VARCHAR(200) NOT NULL,
-    author_id INTEGER NOT NULL,
-    genres TEXT[],
-    published_year INTEGER,
-    available BOOLEAN DEFAULT TRUE,
-    FOREIGN KEY (author_id) REFERENCES authors(id) ON DELETE CASCADE
-);
-
-CREATE TABLE patrons (
-    id SERIAL PRIMARY KEY,
-    name VARCHAR(100) NOT NULL,
-    email VARCHAR(100) UNIQUE NOT NULL,
-    borrowed_books INTEGER[]
-);
-
-
 
 ✅ Features
 
@@ -246,4 +218,5 @@ Response:
 You can test endpoints using tools like:
 
 ⦁	Postman
+
 
